@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\postResource;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
@@ -12,14 +13,23 @@ class postController extends Controller
    //id title (var char),description(text)
    $postsFromDB=Post::all();
    
- 
-    return view('posts.index',['posts'=>$postsFromDB]);
+   
+    return postResource::collection($postsFromDB);
  }
+
+//  public function index(){
+//    //id title (var char),description(text)
+//    $postsFromDB=Post::all();
+   
+ 
+//     return view('posts.index',['posts'=>$postsFromDB]);
+//  }
+
  public function show($postId){
    $singlePostFromDB=post::findOrFail($postId);
    
    
-    return view('posts.show',['post'=>$singlePostFromDB]);
+    return postResource::make($singlePostFromDB) ;
  }
  public function create(){
    $users=User::all();
@@ -38,7 +48,7 @@ class postController extends Controller
     $data=request()->all();
  
     $title =request()->title;
-    $description=request()->decription;
+    $description=request()->description;
     $postCreator=request()->post_creator;
     //2-store the user data in database
 
@@ -47,13 +57,13 @@ class postController extends Controller
       // $post->description = $description;
       // $post->save();
 
-      post::create([
+  $post= post::create([
          'title'=>$title,
          'description'=>$description,
          'user_id'=>$postCreator,
       ]);
     //3-redirection to posts.index
-    return to_route('posts.index');
+    return postResource::make($post);
  }
  public function edit(Post $post){//Post $post take the post from database
    
@@ -73,19 +83,28 @@ class postController extends Controller
     
      //2-Update the user data in database
    $singlePostFromDB=post::find($postId);
-   $singlePostFromDB->update([
+  $singlePostFromDB->update([
       'title'=>$title,
       'description'=>$description,
       'user_id'=>$postCreator,
    ]);
      //3-redirection to posts.show
-     return to_route('posts.show',$postId);
+   //   to_route('posts.show',$postId);
+     return postResource::make($singlePostFromDB);
 }
+// public function destroy($postId){
+//    //1-delete the post from database
+// $post = Post::find($postId);
+// $post->delete();
+//    //2 redirect to posts.index 
+//    return  to_route('posts.index');
+// }
 public function destroy($postId){
    //1-delete the post from database
 $post = Post::find($postId);
 $post->delete();
    //2 redirect to posts.index 
-   return  to_route('posts.index');
+   
+   return  response()->noContent();
 }
 }

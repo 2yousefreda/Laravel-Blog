@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title') edit @endsection
+@section('title') Edit @endsection
 
 @section('content')
 
@@ -17,7 +17,7 @@
  
 <!-- Create Post Form -->
 
-<form method="POST" action="{{route('posts.update',$post->id)}}">
+<form method="POST" action="{{route('posts.update',$post->id)}}" >
     @csrf
     @method('PUT')
     <div class="mb-3">
@@ -28,6 +28,7 @@
       <label for="description" class="form-label">Description</label>
       <textarea name="description" class="form-control" >{{$post->description}}</textarea>
     </div>
+    <div class="mb-3">
     <label for="post_Creator" class="form-label">post Creator</label>
       <select name="post_creator" class="form-control">
         @foreach ($users as $user )
@@ -35,8 +36,8 @@
         @endforeach
       </select>
     </div>
-
     <button type="submit" class="btn btn-primary">Update</button>
+
   </form>
 
 @endsection
