@@ -17,7 +17,7 @@
  
 <!-- Create Post Form -->
 
-<form method="POST" action="{{route('posts.store')}}">
+<form method="POST" action="{{route('posts.store')}}" enctype="multipart/form-data">
     @csrf
     <div class="mb-3">
       <label for="title" class="form-label">Title</label>
@@ -26,6 +26,10 @@
     <div class="mb-3">
       <label for="description" class="form-label">Description</label>
       <textarea name="description" class="form-control" >{{old('description')}}</textarea>
+    </div>
+    <div class="mb-3">
+      <label for="image" class="form-label">Upload Photo:</label><br>
+        <input type="file" id="photo" name="image" class="form-control">
     </div>
     <div class="mb-3">
       <label for="post_Creator" class="form-label">post Creator</label>

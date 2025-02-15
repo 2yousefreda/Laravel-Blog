@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('/posts',postController::class);
 
-Route::get('/posts', function (Request $request) {
+Route::get('/user', function (Request $request) {
+    
     return $request->post();
 })->middleware('auth:sanctum');
